@@ -35,7 +35,6 @@ def sentence(article,adjective,n,v,adverb):
     # define the list sent so we 
     sent=[]
     favorites=[]
-    favorites=list()
     
     #create loop to prompt user about whether they want a sentence     
     while input("would you like a new sentence?") == "yes":
