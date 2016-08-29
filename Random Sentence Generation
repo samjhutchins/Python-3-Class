@@ -1,0 +1,58 @@
+#Sam Hutchins
+#3/7/2016
+
+def main():
+
+
+    # take all the values for the different parts of speach. 
+    noun=[]
+    noun=list()
+    noun=input("enter five nouns (seperated by ,s): ").split(",")
+
+    verb=[]
+    verb=list()
+    verb=input("enter five verbs (seperated by ,s): ").split(",")
+
+    adj=[]
+    adj=list()
+    adj=input("enter five adjectives (seperated by ,s): ").split(",")
+
+    adv=[]
+    adv=list()
+    adv=input("enter five adverbs (seperated by ,s): ").split(",")
+
+    art=[]
+    art=list()
+    art=input("enter five articles (seperated by ,s): ").split(",")
+
+
+    #call the sentence function
+    sentence(art,adj,noun,verb,adj)
+
+def sentence(article,adjective,n,v,adverb):
+    import random
+
+    # define the list sent so we 
+    sent=[]
+    favorites=[]
+    favorites=list()
+    
+    #create loop to prompt user about whether they want a sentence     
+    while input("would you like a new sentence?") == "yes":
+
+        #create sentence from input arguments
+        sent=random.choice(article)+' '+random.choice(adjective)+' '+random.choice(n)+' '+random.choice(v)+' '+random.choice(adverb)
+        print(sent)
+
+        #prompt user to create a favorites list
+        if input("would you like to save this sentence in favorites?")=="yes":
+
+            favorites.append(sent)
+            
+    #create favorites list if user wants one
+    if len(favorites)>0:
+        print("Your favorites list says:")
+        for x in favorites:
+            
+            print(x)
+main()
