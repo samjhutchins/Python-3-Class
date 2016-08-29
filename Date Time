@@ -1,0 +1,166 @@
+#Sam Hutchins
+#4/22/2016
+
+def main():
+
+    import time
+
+    #take file name input
+    file = input('enter file name here: ')
+
+    #try the file to make sure input is correct
+    try:
+        df = open(file, 'r')
+        lines = df.readlines()
+        df.close()
+        
+    except FileNotFoundError:
+        print('Filenotfound error')
+    except:
+        print('other error')
+    else:
+        print('file found')
+
+    #remove the first line which is only a descriptor
+    del(lines[0])
+
+    #for loop to split the line 
+    for x in lines:
+        y = x.split(',')
+
+        #if statement to insure that blank lines aren't included 
+        if len(y)>=3:
+            ordernumber = orderno(y)
+            dateinsecs = dateno(y)
+            distance = distanceno(y)
+            money = dollarno(y)
+
+            divdays = distanceshift(distance)
+            totaldiv = costshift(money,divdays)
+            dayofdelivery = deliverydate(dateinsecs,totaldiv)
+            orderdate = dateoforder(dateinsecs)
+            daysuntildelivery = addindays(totaldiv)
+            allinfo(ordernumber,dayofdelivery)
+            notontime(totaldiv,ordernumber,orderdate,dayofdelivery,daysuntildelivery)
+            estdelivery(ordernumber,dayofdelivery)
+    
+
+def orderno(line):
+
+    #simple function to isolate the order number
+    numbers = line[0]
+
+    return(numbers)
+
+def dateno(line):
+    
+    import time
+
+    #seperate date from the line
+    date = line[1]
+
+    #if loop to create the date in seconds to allow for calculations
+    if '-' in date:
+
+        dates = date.split('-')
+        
+
+        year = int(dates[0])
+        month = int(dates[1])
+        day = int(dates[2])
+
+        secs = time.mktime((year,month,day,0,0,0,0,0,0))
+
+        return(secs)
+
+def dateoforder(secs):
+
+    #function to put date into the reqired format for the assignment
+    import time
+    date = time.strftime("%Y%b%d",   time.localtime(secs))
+    date = date[4:7] + ' ' + date[7:9] + ',' + date[0:4]
+    return(date)
+
+    
+def distanceno(line):
+
+    #simple function to extract delivery distance
+    distance = line[2]
+
+    return(distance)
+
+
+def dollarno(line):
+
+    #extract cost and reformat it to only include integers to allow for calculations
+    dollars = line[3]
+    dollars = dollars.replace('/','')
+    dollars = dollars.replace('n','')
+    dollars = dollars.replace('$','')
+    
+    return(dollars)
+
+
+def distanceshift(distance):
+
+    #function to calculate how much time needs to be added to delivery based on distance
+    add = 0
+    while int(distance) > 500:
+
+        add = add + 86400
+        distance = int(distance) - 500
+        
+    return(int(add))
+
+def costshift(cost,add):
+
+    #reinport the added delivery time and create a new loop to add in
+    #added delivery time for manufacturing costs
+    while int(cost) > 250:
+        
+        add = add + 21600
+        cost = int(cost) - 250
+    return(add)
+
+
+def addindays(add):
+
+    #simple function to calculate how many days delivery will take from order date
+    days = int(add)/86400
+    return(days)    
+        
+def deliverydate(date,add):
+    import time
+
+    #calculate delivery date and convert to required format
+    delivery = date + add
+    date = time.strftime("%Y%b%d",   time.localtime(delivery))
+    date = date[4:7] + ' ' + date[7:9] + ',' + date[0:4]
+    
+    return(date)
+
+def allinfo(numb,deldate):
+
+    #function to print order number and delivery date to screen
+    print('order number is ' + str(numb) + ' expected delivery date is ' + deldate)
+
+
+def notontime(add,numb,date,deldate,days):
+
+    #if loop to create a file containing all info for late deliveries
+    if add > 518400:
+        file = open('./lateorders.data','a')
+        file.write(str(numb) + ',' + str(date) + ',' + str(deldate) + ',' + str(days))
+        file.write('\n')
+        file.close()
+
+
+def estdelivery(numb,deldate):
+
+    #Function to create file containing all data for the orders
+    file = open('./deliverydate.data','a')
+    file.write('order number is ' + str(numb) + ' expected delivery date is ' + deldate)
+    file.write('\n')
+    file.close()
+
+main()
