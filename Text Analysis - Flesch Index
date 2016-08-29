@@ -1,0 +1,119 @@
+#Sam Hutchins
+#3/17/2016
+
+def main():
+
+    #take file name input
+    file_name = input('enter file name here: ')
+
+    #try to open based on input
+    try:
+        obj = open(file_name, 'r')
+        text = obj.read()
+        obj.close()
+
+    #identify error if one exists
+    except FileNotFoundError:
+        print('Filenotfound error')
+    except:
+        print('other error')
+    else:
+        print('file found')
+
+
+    #call functions for value identification
+    real_sent = sentences(text)
+    real_word = words(text)
+    real_syl = syllables(text)
+
+    #call index function using values from first three functions
+    index(real_word,real_sent,real_syl,file_name)
+
+    
+
+    
+def sentences(text):
+
+    #create a loop to add to count for each applicable puncuation
+    count = 0
+    for x in text:
+        if x in '.?!:;':
+            count +=1
+    #print value
+    print('the number of sentences is ' + str(count))
+
+    #return the value
+    return(count)
+
+def words(text):
+
+    #split the text string on the spaces to identify words
+    splitwords=text.split()
+
+    #use the len function to count the words
+    word=len(splitwords)
+
+    #print value
+    print('the number of words is '+ str(word))
+
+    #return value
+    return(word)
+
+def syllables(text):
+
+    #split the string into individual words again
+    splitsyl=text.split()
+
+    count=0
+
+    #create loop to count syllables based on the rules identified in the assignment
+    for x in splitsyl:
+        if len(x)<4:
+            count += 1
+            continue
+        else:
+            for y in x:
+                if y in 'aeiou':
+                    count += 1
+                if y == 'aa''ae''ai''ao''au':
+                    count -= 1
+                if y == 'ea''ee''ei''eo''eu':
+                    count -= 1
+                if y == 'ia''ie''ii''io''iu':
+                    count -= 1
+                if y == 'oa''oe''oi''oo''ou':
+                    count -= 1
+                if y == 'ua''ue''ue''uo''uu':
+                    count -= 1
+                if x[-2]+x[-1] == 'ed':
+                    count -= 1
+                if x[-2]+x[-1] == 'es':
+                    count -= 1
+                if x[-1] == 'e':
+                    count -= 1
+                    
+    syllable = count
+
+    #print value
+    print('number of syllables is ' + str(syllable))
+
+    #Return value
+    return(syllable)
+            
+
+def index(word,sentence,syllable,name):
+
+    #use values from first three functions to calculate index and grade equiv values
+    f=206.835-1.015*(word/sentence)-84.6*(syllable/word)
+    print('the flesch index value is '+ str(f))
+    g=0.39*(word/sentence)+11.8*(syllable/word)-15.59
+    print('the grade level equivalent is '+ str(g))
+    
+
+    #append the necessary information to the file named values
+    file = open('./values.txt','a')
+    file.write('the name of the file is ' + name)
+    file.write(', the flesch index value is ' + str(f))
+    file.write(', the grade level equivalent is' + str(g))
+    
+main()
