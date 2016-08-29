@@ -1,5 +1,6 @@
 #Sam Hutchins
 #3/7/2016
+#this file creates random sentences based on user prompt and allows save to favorites
 
 def main():
 
