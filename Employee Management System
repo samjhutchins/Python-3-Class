@@ -1,0 +1,71 @@
+#Sam Hutchins
+#Assignment 6
+
+def main():
+
+    #define the empty dictionary
+    employees = {}
+
+    #add the first three required entries
+    employees = addfirstthree(employees)
+
+    #Create x to avoid assignment error
+    x = 'x'
+
+    #while loop to provide menu
+    while x != '4':
+        x = input('If you would like to look up an employee press 1 \n\
+If you would like to add a new employee press 2 \n\
+If you would like to delete an employee press 3 \n\
+If you would like to quit the program press 4. ')
+
+        #if loop to create a new dictionary entry based on user input
+        if x == '2':
+            idnumber = input('enter the id number of the employee you would like to add ')
+            dep = input('enter the department of the person you would like to add ')
+            tit = input('enter the title of the person you would like to add ')
+            nam = input('enter the name of the person you would like to add ')
+
+            employees[idnumber] = Employee(idnumber, nam, dep, tit)
+
+        #if loop to lookup and format the result of a search
+        if x == '1':
+            idnumber = input('whos id number would you like to look up? ')
+            info = employees[idnumber].getinfo()
+            print('this employees id number is: ' + info[0] + '\n'
+                  + 'this employees deaprtment is: ' + info[1] + '\n'
+                  + 'this employees title is: ' + info[2] + '\n'
+                  + 'this employees name is: ' + info[3])
+
+        #if loop to delete an entry to the dictionary
+        if x == '3':
+            idnumber = input('what is the id number of the employee you want to delete? ')
+            del employees[idnumber]
+
+
+#first three static entries defined            
+def addfirstthree(employees):
+    employees['47899'] = Employee('47899','Susan Meyers','Accounting','Associate')
+    employees['39119'] = Employee('39119','Mark Jones','IT','SysAdmin')
+    employees['81774'] = Employee('81774','Joy Rogers','Manufacturing','Floor Manager')
+    return(employees)
+
+
+#create the Employee class
+class Employee():
+    '''Employee object'''
+
+    #initialize the class
+    def __init__(self,idno,name,department,title):
+
+        self.idno = idno
+        self.department = department
+        self.title = title
+        self.name = name
+
+    #create the getinfo function to return the object in order to search
+    def getinfo(self):
+        return(self.idno,self.department,self.title,self.name)
+
+#call the main      
+main()
