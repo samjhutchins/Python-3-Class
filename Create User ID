@@ -1,0 +1,78 @@
+#Sam Hutchins
+#2/17/2016
+
+
+
+def main():
+    # take name from user
+    xname = input("Enter your name: ")
+
+    #take the birthday of the user
+    xbirthday = input("Enter your birthday (mm/dd/yyyy): ")
+
+    
+    #run the function defined below to create username
+    username(xname,xbirthday)
+
+    
+    
+    #take the password inputs
+    password1 = input("Enter a password: ")
+    password2 = input("Enter same password:")
+
+    #run the password validation function 
+    password(password1,password2)
+
+
+#write function called username to define username based on parameters given
+def username(name,birthday):
+    uppers = ''
+
+    #for loop to extract upper case letters and storing them in the string called uppers
+    for ltr in name:
+        if ltr.isupper():
+            uppers=uppers+ltr
+        else:
+            uppers = uppers+''
+            
+    #define numbers as a string to not mix integers with string values
+    numbers="0"
+
+    #add the birthday info to the zero we started with
+    numbers = numbers+birthday[3:5]+birthday[0:2]
+
+    #create and print the username
+    username = uppers + numbers
+    print("username is " + username)
+
+#write function called password to validate the password
+def password(x,y):
+
+    #if statement to insure there are both upper and lower case letters
+    if x.isupper()==False and x.islower()==False:
+        print('password has upper and lower letters')
+    else:
+        print('make sure password has both upper and lowercase letters')
+        
+    #if statement to insure it contains both letters and numbers
+    if x.isnumeric()==False and x.isalpha()==False:
+        print('password has both letters and numbers')
+    else:
+        print('make sure password has both letters and numbers')
+
+    #if statement to insure it is the correct length
+    if 6<len(x)<15:
+        print('length of the password is good')
+    else:
+        print('make sure length is between 7 and 14 characters')
+
+    #if statement to insure the passwords match
+    if x==y:
+        print('passwords match')
+    else:
+        print('make sure passwords match')
+             
+#finally call the main function
+main()
+    
+    
